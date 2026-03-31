@@ -1,0 +1,9 @@
+python-dotenv
+psycopg2
+supabase
+fastapi
+uvicorn[standard]
+python-dotenv
+supabase
+pydantic
+pandas
