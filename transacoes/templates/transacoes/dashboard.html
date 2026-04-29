@@ -1,0 +1,256 @@
+{% load static %}<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#2563eb" />
+    <title>ControleGastos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="app">
+        <header class="app-header">
+            <div class="brand">
+                <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-wallet"></i></span>
+                <span class="brand-name">ControleGastos</span>
+            </div>
+            <div class="period-pill" aria-live="polite">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                <span id="current-period">—</span>
+            </div>
+        </header>
+
+        <main class="main">
+            <section class="balance-card" aria-label="Saldo do período">
+                <span class="balance-label">Saldo</span>
+                <strong id="balance" class="balance-value">R$ 0,00</strong>
+                <div class="balance-split">
+                    <div class="split income">
+                        <span class="split-label"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> Receitas</span>
+                        <strong id="income">R$ 0,00</strong>
+                    </div>
+                    <div class="split expense">
+                        <span class="split-label"><i class="fa-solid fa-arrow-trend-down" aria-hidden="true"></i> Despesas</span>
+                        <strong id="expense">R$ 0,00</strong>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card" id="nova-transacao" aria-labelledby="form-titulo">
+                <h2 id="form-titulo" class="card-title">Nova transação</h2>
+
+                <form id="transaction-form" class="form" novalidate>
+                    {% csrf_token %}
+                    <div class="seg" role="radiogroup" aria-label="Tipo">
+                        <button type="button" class="seg-btn active" data-tipo="DESPESA" role="radio" aria-checked="true">
+                            <i class="fa-solid fa-arrow-trend-down" aria-hidden="true"></i> Despesa
+                        </button>
+                        <button type="button" class="seg-btn" data-tipo="RECEITA" role="radio" aria-checked="false">
+                            <i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> Receita
+                        </button>
+                        <input type="hidden" id="type" value="DESPESA" />
+                    </div>
+
+                    <label class="field">
+                        <span class="field-label">Descrição</span>
+                        <input type="text" id="description" placeholder="Ex.: Mercado" required autocomplete="off" />
+                    </label>
+
+                    <div class="field-row">
+                        <label class="field">
+                            <span class="field-label">Valor</span>
+                            <input type="number" id="amount" inputmode="decimal" step="0.01" min="0.01" placeholder="0,00" required />
+                        </label>
+                        <label class="field">
+                            <span class="field-label">Data</span>
+                            <input type="date" id="date" value="{{ hoje_iso }}" required />
+                        </label>
+                    </div>
+
+                    <label class="field">
+                        <span class="field-label">Categoria</span>
+                        <select id="category" required></select>
+                    </label>
+
+                    <div class="credit">
+                        <label class="switch">
+                            <input type="checkbox" id="is-credit" />
+                            <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+                            <span class="switch-text">
+                                <i class="fa-solid fa-credit-card" aria-hidden="true"></i> Crédito parcelado
+                            </span>
+                        </label>
+                        <div class="parcelas-row" id="parcelas-row" hidden>
+                            <label class="field">
+                                <span class="field-label">Parcelas</span>
+                                <input type="number" id="parcelas" inputmode="numeric" min="2" max="60" step="1" value="2" />
+                            </label>
+                            <div class="parcela-preview" aria-live="polite">
+                                <span class="field-label">Cada parcela</span>
+                                <strong id="parcela-valor">R$ 0,00</strong>
+                                <small id="parcela-resumo">—</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fa-solid fa-check" aria-hidden="true"></i> Adicionar
+                    </button>
+                </form>
+            </section>
+
+            <section class="card" id="transacoes" aria-labelledby="lista-titulo">
+                <div class="card-head">
+                    <h2 id="lista-titulo" class="card-title">Transações</h2>
+                    <button class="icon-btn" id="btn-toggle-filters" type="button" aria-expanded="false" aria-controls="filtros" aria-label="Mostrar filtros">
+                        <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class="filters" id="filtros" hidden>
+                    <select id="filter-month" aria-label="Filtrar por mês"></select>
+                    <div class="filters-row">
+                        <input type="date" id="filter-date-from" aria-label="Data inicial" />
+                        <input type="date" id="filter-date-to" aria-label="Data final" />
+                    </div>
+                    <div class="filters-row">
+                        <select id="filter-type" aria-label="Filtrar por tipo">
+                            <option value="all">Todos os tipos</option>
+                            <option value="RECEITA">Receitas</option>
+                            <option value="DESPESA">Despesas</option>
+                        </select>
+                        <select id="filter-category" aria-label="Filtrar por categoria">
+                            <option value="all">Todas categorias</option>
+                        </select>
+                    </div>
+                    <div class="filters-actions">
+                        <button class="btn btn-ghost" id="btn-clear-filters" type="button">
+                            <i class="fa-solid fa-broom" aria-hidden="true"></i> Limpar
+                        </button>
+                        <button class="btn btn-primary" id="btn-apply-filters" type="button">
+                            <i class="fa-solid fa-filter" aria-hidden="true"></i> Aplicar
+                        </button>
+                    </div>
+                </div>
+
+                <ul class="tx-list" id="transactions-list" role="list"></ul>
+                <div class="empty" id="empty-state" hidden>
+                    <i class="fa-regular fa-folder-open" aria-hidden="true"></i>
+                    <p>Sem transações</p>
+                </div>
+            </section>
+
+            <section class="card" id="analise" aria-labelledby="analise-titulo">
+                <h2 id="analise-titulo" class="card-title">Análise</h2>
+
+                <div class="charts">
+                    <div class="chart">
+                        <span class="chart-label">Receitas × Despesas</span>
+                        <canvas id="comparison-chart" aria-label="Gráfico de barras comparando receitas e despesas"></canvas>
+                    </div>
+                    <div class="chart">
+                        <span class="chart-label">Movimentação diária</span>
+                        <canvas id="line-chart" aria-label="Gráfico de linha mostrando movimentação ao longo do tempo"></canvas>
+                    </div>
+                    <div class="chart">
+                        <span class="chart-label">Despesas por categoria</span>
+                        <canvas id="pie-chart" aria-label="Gráfico de pizza com distribuição de despesas por categoria"></canvas>
+                    </div>
+                </div>
+
+                <div class="kpis">
+                    <div class="kpi">
+                        <span class="kpi-label">Maior gasto</span>
+                        <strong id="insight-top-category">—</strong>
+                        <small id="insight-top-category-value">—</small>
+                    </div>
+                    <div class="kpi">
+                        <span class="kpi-label">Dia mais forte</span>
+                        <strong id="insight-best-day">—</strong>
+                        <small id="insight-best-day-value">—</small>
+                    </div>
+                    <div class="kpi">
+                        <span class="kpi-label">Economia</span>
+                        <strong id="insight-savings-rate">—</strong>
+                        <small>Saldo ÷ receitas</small>
+                    </div>
+                    <div class="kpi">
+                        <span class="kpi-label">Ticket médio</span>
+                        <strong id="insight-average-ticket">—</strong>
+                        <small>Por lançamento</small>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <button class="fab" id="btn-fab" type="button" aria-label="Nova transação">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <div class="modal" id="edit-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="edit-titulo">
+        <div class="modal-content">
+            <div class="modal-head">
+                <h3 id="edit-titulo">Editar</h3>
+                <button class="icon-btn" id="modal-close" type="button" aria-label="Fechar">&times;</button>
+            </div>
+            <form id="edit-form" class="form">
+                <input type="hidden" id="edit-id" />
+                <label class="field">
+                    <span class="field-label">Descrição</span>
+                    <input type="text" id="edit-description" required />
+                </label>
+                <div class="field-row">
+                    <label class="field">
+                        <span class="field-label">Valor</span>
+                        <input type="number" id="edit-amount" inputmode="decimal" step="0.01" min="0.01" required />
+                    </label>
+                    <label class="field">
+                        <span class="field-label">Data</span>
+                        <input type="date" id="edit-date" required />
+                    </label>
+                </div>
+                <div class="field-row">
+                    <label class="field">
+                        <span class="field-label">Tipo</span>
+                        <select id="edit-type" required>
+                            <option value="RECEITA">Receita</option>
+                            <option value="DESPESA">Despesa</option>
+                        </select>
+                    </label>
+                    <label class="field">
+                        <span class="field-label">Categoria</span>
+                        <select id="edit-category" required></select>
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-ghost" id="cancel-edit">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        <span id="toast-message">—</span>
+    </div>
+
+    {{ categorias_receita|json_script:"cats-receita" }}
+    {{ categorias_despesa|json_script:"cats-despesa" }}
+    <script>
+        window.CSRF_TOKEN = document.querySelector("[name=csrfmiddlewaretoken]")?.value || "";
+        window.CATEGORIAS = {
+            RECEITA: JSON.parse(document.getElementById("cats-receita").textContent),
+            DESPESA: JSON.parse(document.getElementById("cats-despesa").textContent)
+        };
+        window.MES_ATUAL = "{{ mes_atual }}";
+    </script>
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

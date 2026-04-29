@@ -1,9 +1,5 @@
-python-dotenv
-psycopg2
-supabase
-fastapi
-uvicorn[standard]
-python-dotenv
-supabase
-pydantic
-pandas
+Django>=5.0,<6.0
+python-dotenv>=1.0
+supabase>=2.0
+gunicorn>=21.0
+whitenoise>=6.6

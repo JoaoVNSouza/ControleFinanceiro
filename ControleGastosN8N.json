@@ -1,0 +1,1329 @@
+{
+  "name": "ControleGastos",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c1f4b38f-7639-44f4-a85d-53f23d05f4b2",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1008,
+        -96
+      ],
+      "id": "3272486f-6d70-4ed2-b91b-b8e6c9c62df5",
+      "name": "Webhook",
+      "webhookId": "c1f4b38f-7639-44f4-a85d-53f23d05f4b2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "923bc7b2-2073-4984-99b5-0eff4ae3abca",
+              "name": "numero",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "6c132e8e-8cd8-4d5b-aeb5-3463f35fd625",
+              "name": "msg",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "ca257356-339b-4a8d-a7c4-c3d699b2da3d",
+              "name": "tipomsg",
+              "value": "={{ $json.body.data.messageType }}",
+              "type": "string"
+            },
+            {
+              "id": "b848a724-6d58-4026-b720-66722cf33205",
+              "name": "base64_url",
+              "value": "={{ $json.body.data.message.imageMessage.url }}{{ $json.body.data.message.base64 }}",
+              "type": "string"
+            },
+            {
+              "id": "55bed1ef-e812-455e-9dc5-939b336bf774",
+              "name": "instancia",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "1e2aae17-74fc-4028-b5b0-02ee1eaa184d",
+              "name": "id_msg",
+              "value": "={{ $json.body.data.key.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -848,
+        -96
+      ],
+      "id": "44da0c92-cc7c-43f4-999f-47f48155942d",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "content": "Grupo",
+        "height": 80,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -736,
+        -208
+      ],
+      "id": "4e5ead1f-c4d5-44ff-b793-54c18d418848",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Audio",
+        "height": 80,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        432
+      ],
+      "id": "882413e1-5f78-4ae0-a50a-893d25c57414",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Text",
+        "height": 80,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        -80
+      ],
+      "id": "f6060da8-177e-4b38-8ee7-a982f4fc5692",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9385dbdc-ec38-4047-931a-35e655511da3",
+              "leftValue": "={{ $json.numero }}",
+              "rightValue": "120363422656218077@g.us",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -688,
+        -96
+      ],
+      "id": "20861f26-5e41-458e-aa93-4da8f718f535",
+      "name": "IfGrupo"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f04d79bc-a7ce-47b1-9d64-b678c4596e01",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -256,
+        400
+      ],
+      "id": "30ad2ad6-97de-4bfb-8fac-5acab7b08f9d",
+      "name": "Audio",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.tipomsg }}",
+                    "rightValue": "=imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e64d5f14-b08f-4b50-9f9e-5c0fbad4d41a"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Imagem"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ccbba6b9-a11d-4e88-9790-b8becf14338b",
+                    "leftValue": "={{ $json.tipomsg }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Texto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ade5473a-fca6-4746-9379-4a2c22e5334d",
+                    "leftValue": "={{ $json.tipomsg }}",
+                    "rightValue": "audioMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -480,
+        -128
+      ],
+      "id": "82df7812-abb0-43e2-8340-f3ad03c94db1",
+      "name": "TipoMsg"
+    },
+    {
+      "parameters": {
+        "content": "Imagem",
+        "height": 80,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        -544
+      ],
+      "id": "1ce44e76-b306-44f3-8cf9-41a0c83f3767",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -32,
+        -560
+      ],
+      "id": "7a8218cd-ec8e-4633-8242-ccb0c197dca2",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "={{ $json.instancia }}",
+        "messageId": "={{ $json.id_msg }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        -560
+      ],
+      "id": "0990216b-0b09-44a7-a290-6ed664b5cb3a",
+      "name": "Obter m dia em base64",
+      "credentials": {
+        "evolutionApi": {
+          "id": "K79UH1HpXGkGEIBd",
+          "name": "Evolution account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "=hora atual: {{ $now }}\n\nIdentifique na imagem o valor total da compra, nome do estabelecimento, data e hora (se\nnão encontrar utilize a data e hora atual), categoria, identifique e registre também o\ntipo da movimentação se é uma 'despesa' ou 'receita'. Retorne os dados encontrados no\nformato json. Ex.:\n{\n\"estabelecimento\": \"(NOME_ESTABELECIMENTO)\",\n\"quando\": \"(DATA E HORA NO FORMATO TIMESTAMP)\",\n\"valorTotal\": \"(VALOR TOTAL NO FORMATO FLOAT)\",\n\"detalhes\": \"(EXPLIQUE O QUE PODE SER A COMPRA E NOME DOS ITENS)\",\n\"tipo\": \"(IDENTIFIQUE SE O VALOR É UMA RECEITA O DESPESA)\",\n\"categoria\": \"(INFORME A CATEGORIA)\"\n}\n\n*CATEGORIAS*\nDespesa:\nCompra\nFrete\nEmbalagens\nTaxas de Cartão\nTarifas Bancárias\nJuros / Multas\nAluguel\nLuz\nÁgua\nInternet\nSalários\nComissão\nImpostos\nSistema\nMarketing\nManutenção\nMaterial de Escritório\nCombustível\nTransporte\nAlimentação\nOutros\n\nReceita:\nVenda \nBonificação\nJuros\nPagamentos\nOutras Receitas\n\n*ATENÇÃO*\nCaso não identifique as informações necessárias na imagem, retorne FALSE.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        176,
+        -560
+      ],
+      "id": "3bed8aa0-4747-42d6-8fe7-9fa2c425df11",
+      "name": "Analyze an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "AMCz3whze6rOoVX5",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Edit Fields').item.json.instancia }}",
+        "remoteJid": "={{ $('Edit Fields').item.json.numero }}",
+        "messageText": "Não foi possível identificar a transação, por favor tente novamente.",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        736,
+        -688
+      ],
+      "id": "1774fbb5-c1e7-4ed4-975d-a0c1440cde84",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "K79UH1HpXGkGEIBd",
+          "name": "Evolution account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "RODA SUPABASE SCRIPT",
+        "height": 80,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        800,
+        -496
+      ],
+      "id": "d5d08e87-3389-4ca6-ba17-0868431cbb32",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "51684686-c291-4fbe-8f3d-988bf312d8e7",
+              "leftValue": "={{ $json.content.parts[0].text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        368,
+        -560
+      ],
+      "id": "17df641a-07ff-427c-be4a-231e0bd4b514",
+      "name": "NotIdentImage"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "609CF1cs67rYBFZz",
+          "mode": "list",
+          "cachedResultName": "My Sub-Workflow 1",
+          "cachedResultUrl": "/workflow/609CF1cs67rYBFZz"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        944,
+        -480
+      ],
+      "id": "d7fdff5e-e082-41aa-9441-5565aaa96408",
+      "name": "Execute Workflow",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        1664,
+        -336
+      ],
+      "id": "315dd100-f534-41a4-9732-735e46ac81b5",
+      "name": "When Executed by Another Workflow",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "tableId": "transacoes",
+        "fieldsUi": {
+          "fieldValues": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1936,
+        -320
+      ],
+      "id": "f1b5e130-2edc-43a5-9aef-d1f1d4afe8b5",
+      "name": "Create a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "eK2mISiEhVVR2RCL",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Crie uma mensagem de até 70 caracteres, informando detalhes da compra e que foi registrada!\n\n*DADOS DA COMPRA*\ndata: {{ $json.data }}\nvalor: {{ $json.valor }}\ndescricao: {{ $json.descricao }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        2144,
+        -304
+      ],
+      "id": "f88106d9-3f3a-4395-9574-308d7aa37a70",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2256,
+        -144
+      ],
+      "id": "a78f7c4f-67d2-4e3d-a055-73e86878c5b6",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "AMCz3whze6rOoVX5",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        2496,
+        -304
+      ],
+      "id": "03f31d64-e827-4a9a-a898-63d1385fedc0",
+      "name": "Enviar texto1",
+      "credentials": {
+        "evolutionApi": {
+          "id": "K79UH1HpXGkGEIBd",
+          "name": "Evolution account 2"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.msg }}",
+        "options": {
+          "systemMessage": "=Hora atual: {{ $now }}\nMensagem: {{ $json.msg }}\n\nAnalise a mensagem e extraia informações de uma transação financeira.\n\nRETORNE APENAS UM JSON VÁLIDO (SEM ```json, SEM TEXTO EXTRA).\n\n---\n\n🎯 OBJETIVO\n\nIdentificar:\n\n- data (data)\n- valor (valor total da compra, número float com ponto)\n- descricao (descrição clara da compra)\n- tipo (\"DESPESA\" ou \"RECEITA\")\n- categoria (escolher da lista abaixo)\n- vezes (quantidade de parcelas, se houver)\n\n---\n\n📌 REGRAS IMPORTANTES\n\n1. DATA:\n- Se não encontrar na mensagem, use: {{ $now }}\n- Formato: YYYY-MM-DD\n\n2. VALOR:\n- Sempre retornar número (ex: 150.00)\n- Se estiver com vírgula, converter para ponto\n\n3. TIPO:\n- Compras → DESPESA\n- Recebimentos → RECEITA\n\n4. PARCELAMENTO:\n- Se encontrar padrões como:\n  - \"3x\"\n  - \"3 vezes\"\n  - \"em 3x\"\n  - \"parcelado em 3\"\n\n👉 Retorne:\n\"vezes\": 3\n\n👉 Caso NÃO tenha parcelamento:\n\"vezes\": null\n\n5. DETALHES:\n- Descrever o que foi comprado\n- Incluir nome do local se existir\n\n6. CATEGORIA:\nEscolher EXATAMENTE uma das opções abaixo:\n\nDespesas:\nCompra\nFrete\nEmbalagens\nTaxas de Cartão\nTarifas Bancárias\nJuros / Multas\nAluguel\nLuz\nÁgua\nInternet\nSalários\nComissão\nImpostos\nSistema\nMarketing\nManutenção\nMaterial de Escritório\nCombustível\nTransporte\nAlimentação\nOutros\n\nReceitas:\nVenda \nBonificação\nJuros\nPagamentos\nOutras Receitas\n\n---\n\n⚠️ VALIDAÇÃO\n\n- Se NÃO conseguir identificar valor OU tipo → retorne:\nFALSE\n\n---\n\n✅ FORMATO FINAL\n\n{\n  \"data\": \"YYYY-MM-DD\",\n  \"valorTotal\": 150.00,\n  \"detalhes\": \"Compra de roupas na loja X\",\n  \"tipo\": \"DESPESA\",\n  \"categoria\": \"Compra\",\n  \"vezes\": 3\n}",
+          "enableStreaming": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        0,
+        -32
+      ],
+      "id": "c51e928d-03fd-4126-909a-6deaae9f2cc1",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        0,
+        128
+      ],
+      "id": "2495a6a4-abf3-439b-ab00-eb20a4c00d6a",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "AMCz3whze6rOoVX5",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "transacoes",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "data",
+              "fieldValue": "={{ $json.data }}"
+            },
+            {
+              "fieldId": "valor",
+              "fieldValue": "={{ $json.valorTotal }}"
+            },
+            {
+              "fieldId": "descricao",
+              "fieldValue": "={{ $json.detalhes }}"
+            },
+            {
+              "fieldId": "tipo",
+              "fieldValue": "={{ $json.tipo }}"
+            },
+            {
+              "fieldId": "categoria",
+              "fieldValue": "={{ $json.categoria }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        800,
+        112
+      ],
+      "id": "5ab2b946-bc8b-48b5-9ba7-cc92c9d53298",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "eK2mISiEhVVR2RCL",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.output;\n\n// Remove ```json e ```\nconst clean = raw\n  .replace(/```json/g, \"\")\n  .replace(/```/g, \"\")\n  .trim();\n\n// Converte para objeto\nconst data = JSON.parse(clean);\n\nreturn [{ json: data }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        -32
+      ],
+      "id": "6a0a3a00-bb4f-4a5d-b5f4-3f57c0a9ea20",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "608aa0e0-aef6-4d18-98e2-922e50fb969c",
+              "leftValue": "={{ $json.msg }}",
+              "rightValue": "deletar",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "5484e84e-043a-4192-b663-7dffc9cd4e18",
+              "leftValue": "={{ $json.msg }}",
+              "rightValue": "Deletar",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -288,
+        -96
+      ],
+      "id": "89ca03f1-ad45-44b8-86bd-727c917bb4e4",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from datetime import datetime, timedelta\n\nfor item in _input.all():\n    # Converte string para datetime\n    data_original = datetime.fromisoformat(item.json[\"data\"])\n    \n    # Soma 1 hora\n    nova_data = data_original + timedelta(hours=1)\n    \n    # Formata: Ano-mes-dia horas:minutos:segundos\n    item.json[\"data\"] = nova_data.strftime(\"%d/%m/%Y\")\n\nreturn _input.all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1584,
+        128
+      ],
+      "id": "6ebaf495-348f-4d0e-949b-9c466ff7fd73",
+      "name": "Code in Python (Beta)1"
+    },
+    {
+      "parameters": {
+        "url": "https://supabase.jvsystem.site/rest/v1/transacoes?select=id&order=id.desc&limit=1",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -32,
+        -224
+      ],
+      "id": "bfa58a50-7b00-4072-b1d7-9f2a7a63587f",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "transacoes",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -224
+      ],
+      "id": "96571996-f8cb-4bb7-b955-910ab974c628",
+      "name": "Delete a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "eK2mISiEhVVR2RCL",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "WhatAutomation",
+        "remoteJid": "120363422656218077@g.us",
+        "messageText": "Transação removida com sucesso!",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        336,
+        -240
+      ],
+      "id": "88da92ef-070c-4f14-811f-f7229b80bd36",
+      "name": "Enviar texto3",
+      "credentials": {
+        "evolutionApi": {
+          "id": "K79UH1HpXGkGEIBd",
+          "name": "Evolution account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "efedfefd-fab0-42e8-9061-beb117362fd7",
+              "leftValue": "={{ $json.vezes }}",
+              "rightValue": "null",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        544,
+        -32
+      ],
+      "id": "7fb46e6e-0dd9-43cb-a66f-89c38135f40f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://supabase.jvsystem.site/",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "={\n  \"apikey\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE\",\n  \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE\",\n  \"Content-Type\": \"application/json\",\n  \"Prefer\": \"return=minimal\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1792,
+        -192
+      ],
+      "id": "710cecb2-cd49-4903-9791-4ac1313b923b",
+      "name": "HTTP Request1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "eK2mISiEhVVR2RCL",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const valorTotal = $input.first().json.valorTotal;\nconst vezes = $input.first().json.vezes;\nconst dataBase = new Date($input.first().json.data);\n\nconst valorParcela = Number((valorTotal / vezes).toFixed(2));\n\nlet parcelas = [];\n\nfor (let i = 0; i < vezes; i++) {\n    let novaData = new Date(dataBase);\n    novaData.setMonth(novaData.getMonth() + i);\n\n    parcelas.push({\n        data: novaData.toISOString().split('T')[0],\n        valor: valorParcela,\n        descricao: $input.first().json.detalhes,\n        tipo: \"despesa\",\n        categoria: $input.first().json.categoria\n    });\n}\n\n// 👇 IMPORTANTE: retornar como 1 item contendo array\nreturn [\n  {\n    JSON: parcelas\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        752,
+        -224
+      ],
+      "id": "3fcfbb02-fa5f-4dad-ac37-d3cd32097153",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "batchSize": "={{$items().length}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1136,
+        -160
+      ],
+      "id": "74c86332-0984-4d45-bdb5-65c509bcf869",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "tableId": "transacoes",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "data",
+              "fieldValue": "={{ $json.data }}"
+            },
+            {
+              "fieldId": "valor",
+              "fieldValue": "={{ $json.valor }}"
+            },
+            {
+              "fieldId": "descricao",
+              "fieldValue": "={{ $json.descricao }}"
+            },
+            {
+              "fieldId": "tipo",
+              "fieldValue": "={{ $json.tipo }}"
+            },
+            {
+              "fieldId": "categoria",
+              "fieldValue": "={{ $json.categoria }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        -80
+      ],
+      "id": "f105d240-2f37-4cfc-9a39-1ec38735995b",
+      "name": "Create a row3",
+      "credentials": {
+        "supabaseApi": {
+          "id": "eK2mISiEhVVR2RCL",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "JSON",
+        "options": {
+          "disableDotNotation": false,
+          "destinationFieldName": "",
+          "includeBinary": false
+        }
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        -432
+      ],
+      "id": "82c4d921-7683-4e87-b9dc-e93198638970",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "JSON",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -224
+      ],
+      "id": "1e788563-a3fb-40e8-84eb-2c22d1b59df8",
+      "name": "split_saida"
+    },
+    {
+      "parameters": {
+        "content": "Parcelamento",
+        "height": 80,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        576,
+        -192
+      ],
+      "id": "05d052b2-27f3-4e93-a8e6-052d65382fbc",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "Única",
+        "height": 80,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        592,
+        96
+      ],
+      "id": "b08e0828-7dd7-4c72-9bcf-191f83422fe3",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "WhatAutomation",
+        "remoteJid": "120363422656218077@g.us",
+        "messageText": "=Transação de número {{ $json.id }}\n\n*Transação*\ndata: {{ $json.data }}\nvalor: R$ {{ $json.valor }}\ndescricao: {{ $json.descricao }}\n\n| Para deletar envie o comando: deletar |",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1776,
+        32
+      ],
+      "id": "274a2808-bf69-4cdd-a9a3-9e477e552a94",
+      "name": "Send Confir Zap",
+      "credentials": {
+        "evolutionApi": {
+          "id": "K79UH1HpXGkGEIBd",
+          "name": "Evolution account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "IfGrupo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IfGrupo": {
+      "main": [
+        [
+          {
+            "node": "TipoMsg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TipoMsg": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Obter m dia em base64": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Analyze an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze an image": {
+      "main": [
+        [
+          {
+            "node": "NotIdentImage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NotIdentImage": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Create a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)1": {
+      "main": [
+        [
+          {
+            "node": "Send Confir Zap",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Delete a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete a row": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "split_saida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Create a row3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in Python (Beta)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        []
+      ]
+    },
+    "split_saida": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "timezone": "America/Rio_Branco",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "1eef6179-3d74-41ea-9563-4d68eaecdbe3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f59123d947d36accde140e81ef2678eebfc119a3bb3734e76d91037390a57245"
+  },
+  "id": "X1MoPZgKqFpzTw6l",
+  "tags": []
+}

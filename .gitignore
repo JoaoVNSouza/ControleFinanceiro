@@ -4,3 +4,8 @@
 __pycache__/
 base/
 old/
+db.sqlite3
+staticfiles/
+*.pyc
+.legacy
+ControleGastosN8N.json
