@@ -2,6 +2,20 @@
 
 Painel financeiro em Django + Supabase REST + Chart.js, com integração WhatsApp via N8N (extração de transações por LLM).
 
+## Demonstração
+
+### Dashboard web
+
+<img src="static/img/screenshot%20web%20app.png" alt="Dashboard ControleGastos" width="500">
+
+Resumo do mês, filtros por categoria/tipo, gráficos e CRUD completo de transações — tudo numa tela só.
+
+### Lançamento por WhatsApp (N8N + LLM)
+
+<img src="static/img/n8n_whatsapp_exemplo.png" alt="Exemplo de uso via WhatsApp integrado ao N8N" width="300">
+
+**Zero planilha, zero formulário.** Mande uma mensagem no WhatsApp ("paguei 47,90 no mercado no crédito em 3x") e o fluxo do N8N usa o Gemini para extrair valor, categoria, tipo, data e parcelamento, gravando direto na tabela `transacoes` do Supabase. O dashboard reflete o lançamento na hora — sem digitar em tabela, sem abrir o app.
+
 ## Stack
 
 - **Django 5**
